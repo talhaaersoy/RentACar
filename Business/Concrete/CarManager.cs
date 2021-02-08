@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -23,6 +25,11 @@ namespace Business.Concrete
             return _iCarDal.GetAll();
         }
 
+        public Car GetByCarId(int id)
+        {
+            return _iCarDal.Get(c => c.Id == id);
+        }
+
         public List<Car> GetCarsByBrandId(int brandId)
         {
             return _iCarDal.GetAll(c => c.BrandId == brandId);
@@ -33,15 +40,23 @@ namespace Business.Concrete
             return _iCarDal.GetAll(c => c.ColorId == colorId);
         }
 
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _iCarDal.GetCarDetails();
+        }
+
         public void Add(Car car)
         {
             var context = new ValidationContext(car);
             var validationResult = new List<ValidationResult>();
 
-            bool isValid6 = Validator.TryValidateObject(car, context, validationResult, true);
-            if (!isValid6)
+            bool isValid = Validator.TryValidateObject(car, context, validationResult, true);
+            if (!isValid)
             {
-                Console.WriteLine(validationResult);
+                foreach (var v in validationResult)
+                {
+                    Console.WriteLine(v.ToString());
+                }
             }
             else
             {
@@ -55,9 +70,23 @@ namespace Business.Concrete
 
         }
 
-        public void update(Car car)
+        public void Update(Car car)
         {
-            _iCarDal.Update(car);
+            var context = new ValidationContext(car);
+            var validationResult = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(car, context, validationResult, true);
+            if (!isValid)
+            {
+                foreach (var v in validationResult)
+                {
+                    Console.WriteLine(v.ToString());
+                }
+            }
+            else
+            {
+                _iCarDal.Update(car);
+            }
         }
     }
 }

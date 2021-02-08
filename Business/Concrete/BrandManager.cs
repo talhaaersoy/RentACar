@@ -24,21 +24,15 @@ namespace Business.Concrete
         {
             return _brandDal.GetAll();
         }
+
+        public Brand Get(int id)
+        {
+            return _brandDal.Get(b => b.Id == id);
+        }
+
         public void Add(Brand brand)
         {
-            var context = new ValidationContext(brand);
-            var validationResult = new List<ValidationResult>();
-
-            bool isValid6 = Validator.TryValidateObject(brand, context, validationResult, true);
-            if (!isValid6)
-            {
-                Console.WriteLine(validationResult);
-            }
-            else
-            {
-                _brandDal.Add(brand);
-            }
-            
+            _brandDal.Add(brand);
         }
 
         public void Delete(Brand brand)
@@ -46,7 +40,7 @@ namespace Business.Concrete
             _brandDal.Delete(brand);
         }
 
-        public void update(Brand brand)
+        public void Update(Brand brand)
         {
             _brandDal.Update(brand);
         }
