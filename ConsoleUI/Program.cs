@@ -14,7 +14,19 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarsManagerTest();
+            //CarsManagerTest();
+
+           RentalManager rentalManager = new RentalManager(new EfRentalDal());
+           
+               rentalManager.Add(new Rental
+               {
+                   CarId = 2,
+                   CustomerId = 2,
+
+               });
+            
+       
+
         }
 
         private static void CarsManagerTest()
@@ -38,14 +50,14 @@ namespace ConsoleUI
             }
            
             Console.WriteLine("-----------");
-            foreach (var car in cars.GetCarDetails())
+            foreach (var car in cars.GetCarDetails().Data)
             {
                 Console.WriteLine($"Car Name : {car.BrandName +" "+ car.CarName }");
             }
             Console.WriteLine("-----------");
-            foreach (var car in cars.GetCarsByBrandId(2))
+            foreach (var car in cars.GetCarsByBrandId(2).Data)
             {
-                Console.WriteLine($"Car name : {car.Name} ");
+                Console.WriteLine($"Car name : {car.CarName} ");
             }
             Console.WriteLine("----------");
         }

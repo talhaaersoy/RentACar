@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -20,32 +21,32 @@ namespace Business.Concrete
         }
 
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _iCarDal.GetAll();
+            return  new SuccessDataResult<List<Car>>(_iCarDal.GetAll());
         }
 
-        public Car GetByCarId(int id)
+        public IDataResult<Car> GetByCarId(int id)
         {
-            return _iCarDal.Get(c => c.Id == id);
+            return new SuccessDataResult<Car>(_iCarDal.Get(c => c.Id == id));
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int brandId)
         {
-            return _iCarDal.GetAll(c => c.BrandId == brandId);
+            return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails(c => c.BrandId == brandId));
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public IDataResult<List<CarDetailDto>> GetCarsByColorId(int colorId)
         {
-            return _iCarDal.GetAll(c => c.ColorId == colorId);
+            return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails(c => c.ColorId == colorId));
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _iCarDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             var context = new ValidationContext(car);
             var validationResult = new List<ValidationResult>();
@@ -55,22 +56,26 @@ namespace Business.Concrete
             {
                 foreach (var v in validationResult)
                 {
-                    Console.WriteLine(v.ToString());
+                    return new ErrorResult(v.ToString());
                 }
+
+                return null;
             }
             else
             {
-                _iCarDal.Add(car);
+               _iCarDal.Add(car);
+               return new SuccessResult();
             }
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
            _iCarDal.Delete(car);
+           return new SuccessResult();
 
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             var context = new ValidationContext(car);
             var validationResult = new List<ValidationResult>();
@@ -80,12 +85,15 @@ namespace Business.Concrete
             {
                 foreach (var v in validationResult)
                 {
-                    Console.WriteLine(v.ToString());
+                    return new ErrorResult(v.ToString());
                 }
+
+                return null;
             }
             else
             {
                 _iCarDal.Update(car);
+                return new SuccessResult();
             }
         }
     }
