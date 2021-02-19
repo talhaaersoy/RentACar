@@ -4,10 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace Business.Concrete
 {
@@ -45,27 +50,15 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            var context = new ValidationContext(car);
-            var validationResult = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(car, context, validationResult, true);
-            if (!isValid)
-            {
-                foreach (var v in validationResult)
-                {
-                    return new ErrorResult(v.ToString());
-                }
-
-                return null;
-            }
-            else
-            {
+          
+            ValidationTool.Validate(new CarValidator(), car);
                _iCarDal.Add(car);
                return new SuccessResult();
-            }
+           
         }
 
         public IResult Delete(Car car)
@@ -77,24 +70,11 @@ namespace Business.Concrete
 
         public IResult Update(Car car)
         {
-            var context = new ValidationContext(car);
-            var validationResult = new List<ValidationResult>();
-
-            bool isValid = Validator.TryValidateObject(car, context, validationResult, true);
-            if (!isValid)
-            {
-                foreach (var v in validationResult)
-                {
-                    return new ErrorResult(v.ToString());
-                }
-
-                return null;
-            }
-            else
-            {
+           
+           
                 _iCarDal.Update(car);
                 return new SuccessResult();
-            }
+           
         }
     }
 }
