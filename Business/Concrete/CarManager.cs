@@ -4,7 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -16,6 +18,7 @@ using ValidationException = FluentValidation.ValidationException;
 
 namespace Business.Concrete
 {
+    
     public class CarManager : ICarService
     {
         private ICarDal _iCarDal;
@@ -25,32 +28,36 @@ namespace Business.Concrete
             _iCarDal = iCarDal;
         }
 
-
+        [SecuredOperation("Customer,car.add")]
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return  new SuccessDataResult<List<Car>>(_iCarDal.GetAll());
         }
-
+        [SecuredOperation("Customer")]
+        [CacheAspect]
         public IDataResult<Car> GetByCarId(int id)
         {
             return new SuccessDataResult<Car>(_iCarDal.Get(c => c.Id == id));
         }
-
+        [SecuredOperation("Customer")]
         public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int brandId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails(c => c.BrandId == brandId));
         }
-
+        [SecuredOperation("Customer")]
         public IDataResult<List<CarDetailDto>> GetCarsByColorId(int colorId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails(c => c.ColorId == colorId));
         }
-
+        [SecuredOperation("Customer")]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());
         }
+        [SecuredOperation("Admin,car.add")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
 
@@ -60,14 +67,15 @@ namespace Business.Concrete
                return new SuccessResult();
            
         }
-
+        [SecuredOperation("Admin")]
         public IResult Delete(Car car)
         {
            _iCarDal.Delete(car);
            return new SuccessResult();
 
         }
-
+        [SecuredOperation("Admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
            

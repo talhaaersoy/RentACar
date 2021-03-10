@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Text;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -11,6 +12,7 @@ using Entities.Concrete;
 
 namespace Business.Concrete
 {
+    [SecuredOperation("Admin")]
     public class BrandManager:IBrandService
     {
         private IBrandDal _brandDal;

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
 namespace Business.Concrete
 {
+    [SecuredOperation("Admin")]
     public class RentalManager : IRentalService
     {
         private IRentalDal _rentalDal;
@@ -17,6 +19,7 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
+       
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
