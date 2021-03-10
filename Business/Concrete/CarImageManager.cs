@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+<<<<<<< HEAD
 using Business.BusinessAspects.Autofac;
+=======
+>>>>>>> refs/remotes/origin/main
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -12,7 +15,10 @@ using System.Text;
 
 namespace Business.Concrete
 {
+<<<<<<< HEAD
     [SecuredOperation("Customer,Admin")]
+=======
+>>>>>>> refs/remotes/origin/main
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;

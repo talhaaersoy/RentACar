@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Business.DependencyResolvers.Autofac
 {
     public class AutofacBusinessModule : Module
@@ -36,6 +37,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
+<<<<<<< HEAD
 <<<<<<< refs/remotes/origin/main
 =======
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
@@ -46,6 +48,11 @@ namespace Business.DependencyResolvers.Autofac
 
             
 >>>>>>> local
+=======
+            builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
+            builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
+
+>>>>>>> refs/remotes/origin/main
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
 
