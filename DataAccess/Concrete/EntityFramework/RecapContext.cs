@@ -20,18 +20,12 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Rental> Rentals { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> Customers { get; set; }
-<<<<<<< HEAD
-<<<<<<< refs/remotes/origin/main
-=======
+
         public DbSet<CarImage> CarImages { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
->>>>>>> local
-=======
-        public DbSet<CarImage> CarImages { get; set; }
 
->>>>>>> refs/remotes/origin/main
 
 
     }
