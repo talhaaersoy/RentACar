@@ -1,6 +1,3 @@
-```
-
-```
 
 <h1 align="center">Rent A Car Project : Araba Kiralama Sistemi</h1> 
 
