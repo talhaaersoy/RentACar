@@ -7,6 +7,7 @@ using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -68,6 +69,7 @@ namespace Business.Concrete
            
         }
         [SecuredOperation("Admin")]
+        [CacheRemoveAspect("ICarService.Get")] 
         public IResult Delete(Car car)
         {
            _iCarDal.Delete(car);
@@ -83,6 +85,18 @@ namespace Business.Concrete
                 _iCarDal.Update(car);
                 return new SuccessResult();
            
+        }
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice < 250)
+            {
+                throw new Exception("");
+
+            }
+            Add(car);
+            return null;
         }
     }
 }

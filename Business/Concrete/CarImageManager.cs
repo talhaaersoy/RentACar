@@ -65,10 +65,6 @@ namespace Business.Concrete
         }
 
 
-
-
-
-
         public IResult CheckIfImageLimitExceded(int id)
         {
             var result = _carImageDal.GetAll(c => c.CarId == id);
