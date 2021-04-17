@@ -28,7 +28,7 @@ namespace Business.Concrete
             _iCarDal = iCarDal;
         }
 
-        [SecuredOperation("Customer,car.add")]
+       
         [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
@@ -50,7 +50,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails(c => c.ColorId == colorId));
         }
-        [SecuredOperation("Customer")]
+        
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_iCarDal.GetCarDetails());

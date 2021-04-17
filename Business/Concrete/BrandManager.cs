@@ -12,7 +12,7 @@ using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    [SecuredOperation("Admin")]
+    
     public class BrandManager:IBrandService
     {
         private IBrandDal _brandDal;

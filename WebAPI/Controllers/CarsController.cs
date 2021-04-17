@@ -12,7 +12,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize()]
     public class CarsController : ControllerBase
     {
         ICarService _carService;
