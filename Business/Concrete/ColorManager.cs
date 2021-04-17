@@ -9,7 +9,7 @@ using Entities.Concrete;
 
 namespace Business.Concrete
 {
-    [SecuredOperation("Admin")]
+   
     public class ColorManager:IColorService
     {
         private IColorDal _colorDal;
