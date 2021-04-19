@@ -7,10 +7,11 @@ using Business.BusinessAspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
-    [SecuredOperation("Admin")]
+   
     public class RentalManager : IRentalService
     {
         private IRentalDal _rentalDal;
@@ -19,7 +20,11 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-       
+
+        public IDataResult<List<RentalDto>> GetRentalDetails()
+        {
+           return new SuccessDataResult<List<RentalDto>>(_rentalDal.GetRentalDetails());
+        }
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
